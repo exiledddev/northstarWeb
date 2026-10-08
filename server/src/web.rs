@@ -55,7 +55,7 @@ pub struct Me {
 
 pub async fn handle(mut req: Request, env: Env) -> Result<Response> {
     let url = req.url()?;
-    let route = logic::route(&req.method().to_string(), url.path());
+    let route = logic::route(req.method().as_ref(), url.path());
     if route == Route::NotFound {
         // everything else is the app itself
         return match env.assets("ASSETS") {
