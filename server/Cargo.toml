@@ -1,0 +1,29 @@
+[package]
+name = "northstar-server"
+version = "0.1.0"
+edition = "2021"
+description = "Northstar Web's server: Discord sign-in and the team library API, on a Cloudflare Worker."
+license = "MIT"
+authors = ["MarkedExiled Software"]
+publish = false
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+# The Worker itself only builds for the browser-style target Cloudflare runs.
+# On any other machine the crate is just its decisions (src/logic.rs), so
+# `cargo test` runs them natively.
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+worker = { version = "=0.8.7", features = ["d1"] }
+sha2 = "0.10"
+getrandom = { version = "0.2", features = ["js"] }
+base64 = "0.22"
+
+[profile.release]
+opt-level = "z"
+lto = true
+codegen-units = 1
