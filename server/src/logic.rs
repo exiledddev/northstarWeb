@@ -207,6 +207,8 @@ pub enum Route {
     Stamp,
     ListScripts,
     CreateScript,
+    /// A script as it is now, without asking to edit it.
+    Read(String),
     Open(String),
     Save(String),
     Renew(String),
@@ -244,6 +246,7 @@ pub fn route(method: &str, path: &str) -> Route {
         ("GET", ["api", "stamp"]) => Some(Route::Stamp),
         ("GET", ["api", "scripts"]) => Some(Route::ListScripts),
         ("POST", ["api", "scripts"]) => Some(Route::CreateScript),
+        ("GET", ["api", "scripts", s]) => id(s).map(Route::Read),
         ("POST", ["api", "scripts", s, "open"]) => id(s).map(Route::Open),
         ("PUT", ["api", "scripts", s]) => id(s).map(Route::Save),
         ("POST", ["api", "scripts", s, "lease"]) => id(s).map(Route::Renew),
@@ -282,6 +285,7 @@ impl Route {
                 | Route::Me
                 | Route::Stamp
                 | Route::ListScripts
+                | Route::Read(_)
                 | Route::Trash
                 | Route::Snapshots(_)
                 | Route::Snapshot(_)
@@ -406,6 +410,8 @@ mod tests {
     fn requests_find_their_route() {
         let id = "abcdef0123456789";
         assert_eq!(route("GET", "/api/scripts"), Route::ListScripts);
+        assert_eq!(route("GET", &format!("/api/scripts/{id}")), Route::Read(id.into()));
+        assert!(!Route::Read(id.into()).changes_things());
         assert_eq!(route("POST", &format!("/api/scripts/{id}/open")), Route::Open(id.into()));
         assert_eq!(route("PUT", &format!("/api/scripts/{id}")), Route::Save(id.into()));
         assert_eq!(route("POST", &format!("/api/scripts/{id}/release")), Route::Release(id.into()));

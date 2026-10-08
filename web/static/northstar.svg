@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <rect width="128" height="128" rx="30" fill="#0C0709"/>
+  <rect x="1" y="1" width="126" height="126" rx="29.5" fill="none" stroke="#2E1A1E" stroke-width="2"/>
+  <polygon points="82.93,45.35 75.67,57.83 65.27,63.03" fill="#BC5A57"/>
+  <polygon points="82.65,45.07 64.97,62.73 70.17,52.33" fill="#AC4347"/>
+  <polygon points="82.65,82.93 70.17,75.67 64.97,65.27" fill="#932130"/>
+  <polygon points="82.93,82.65 65.27,64.97 75.67,70.17" fill="#860E23"/>
+  <polygon points="45.07,82.65 52.33,70.17 62.73,64.97" fill="#AB4246"/>
+  <polygon points="45.35,82.93 63.03,65.27 57.83,75.67" fill="#8B1427"/>
+  <polygon points="45.35,45.07 57.83,52.33 63.03,62.73" fill="#D47B6D"/>
+  <polygon points="45.07,45.35 62.73,63.03 52.33,57.83" fill="#B85453"/>
+  <polygon points="64.23,21.58 74.05,51.69 64.32,62.43" fill="#FFB897"/>
+  <polygon points="63.77,21.58 63.68,62.43 53.95,51.69" fill="#EFA288"/>
+  <polygon points="106.42,64.23 76.31,74.05 65.57,64.32" fill="#AF484A"/>
+  <polygon points="106.42,63.77 65.57,63.68 76.31,53.95" fill="#A83E44"/>
+  <polygon points="63.77,106.42 53.95,76.31 63.68,65.57" fill="#9F313B"/>
+  <polygon points="64.23,106.42 64.32,65.57 74.05,76.31" fill="#860E23"/>
+  <polygon points="21.58,63.77 51.69,53.95 62.43,63.68" fill="#F3A78C"/>
+  <polygon points="21.58,64.23 62.43,64.32 51.69,74.05" fill="#C05F5A"/>
+</svg>

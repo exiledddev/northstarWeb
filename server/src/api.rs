@@ -19,6 +19,7 @@ pub async fn answer(route: Route, req: &mut Request, cx: &Cx, me: &Me) -> Result
         Route::Stamp => stamp(cx).await,
         Route::ListScripts => list(cx, me).await,
         Route::CreateScript => create(req, cx, me).await,
+        Route::Read(id) => read(&id, cx, me).await,
         Route::Open(id) => open(&id, cx, me).await,
         Route::Save(id) => save(&id, req, cx, me).await,
         Route::Renew(id) => renew(&id, cx, me).await,
@@ -230,6 +231,39 @@ async fn head(id: &str, cx: &Cx) -> Result<Option<Head>> {
         .bind(&[s(id)])?
         .first(None)
         .await
+}
+
+/// The script as it is now, for someone reading along: who holds it is
+/// reported, nothing is taken.
+async fn read(id: &str, cx: &Cx, me: &Me) -> Result<Response> {
+    #[derive(Deserialize)]
+    struct Row {
+        body: String,
+        version: i64,
+        updated_at: i64,
+        updated_by: String,
+    }
+    let row: Option<Row> = cx
+        .db
+        .prepare("SELECT body, version, updated_at, updated_by FROM scripts WHERE id = ?1 AND deleted_at IS NULL")
+        .bind(&[s(id)])?
+        .first(None)
+        .await?;
+    let Some(row) = row else {
+        return web::fail(404, "That script is not in the library any more.");
+    };
+    let lease = lease_of(id, cx, me).await?;
+    web::json(
+        200,
+        &serde_json::json!({
+            "id": id,
+            "body": row.body,
+            "version": row.version,
+            "updated_at": row.updated_at,
+            "updated_by": row.updated_by,
+            "lease": lease_json(&lease),
+        }),
+    )
 }
 
 async fn open(id: &str, cx: &Cx, me: &Me) -> Result<Response> {

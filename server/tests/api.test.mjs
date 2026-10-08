@@ -125,6 +125,12 @@ test("one person edits a script at a time, and nobody overwrites anybody", async
   assert.equal(row.editing, OWNER);
   assert.ok(listed.json.people.some((p) => p.id === OWNER && p.name === "Sam Ito"));
 
+  // reading along takes nothing
+  const peek = await b.get(`/api/scripts/${sid}`);
+  assert.equal(peek.status, 200);
+  assert.equal(peek.json.lease.holder, OWNER);
+  assert.equal(peek.json.version, 1);
+
   // B can read it, but not write to it
   const bOpen = await b.post(`/api/scripts/${sid}/open`);
   assert.equal(bOpen.status, 200);

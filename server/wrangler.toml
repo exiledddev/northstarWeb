@@ -6,6 +6,7 @@ compatibility_date = "2026-09-01"
 
 [build]
 command = "cargo install -q worker-build@0.8.7 && worker-build --release"
+watch_dir = "src"
 
 # The app itself (web/build.sh puts it in web/dist). Cloudflare serves these
 # files without running the Worker; only /api/* and /auth/* reach it.
