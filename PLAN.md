@@ -1,5 +1,20 @@
 # Northstar for the web — the plan
 
+## Status (October 2026)
+
+Built and tested: everything in this plan up to and including phase 2, plus
+Discord accounts, the Home script picker and History:
+
+- **Desktop app:** restructured as a library behind a `Store` trait, with its
+  file format byte-for-byte unchanged (golden test) and a pre-install backup in
+  `install.sh`. 80 tests.
+- **Server:** `server/`. 11 logic tests and 11 end-to-end API tests.
+- **Browser app:** `web/`. 4 Playwright tests in Chromium.
+
+Not built yet: phase 3 (real-time co-writing) and phase 4 (comments, revision
+mode, desktop "Connect to team"). Setup and deploy steps are in
+[README.md](README.md).
+
 ## TL;DR
 
 - **Same app in the browser.** The Rust/egui Northstar code compiles to WebAssembly, so the web app looks and works exactly like the desktop app (and stays consistent with Tesseract) because it is the same code.

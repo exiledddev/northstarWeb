@@ -1,0 +1,15 @@
+{
+  "name": "northstar-server",
+  "private": true,
+  "description": "Tooling for the Northstar Web Worker: wrangler to run and deploy it, and the API tests.",
+  "scripts": {
+    "dev": "wrangler dev --port 8787",
+    "migrate:local": "wrangler d1 migrations apply northstar --local",
+    "migrate:remote": "wrangler d1 migrations apply northstar --remote",
+    "deploy": "wrangler deploy",
+    "test": "node --test tests/*.test.mjs"
+  },
+  "devDependencies": {
+    "wrangler": "4.148.0"
+  }
+}

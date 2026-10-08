@@ -1,0 +1,34 @@
+# Northstar Web — the Worker that serves the app and the team library.
+# Setup steps are in ../README.md.
+name = "northstar"
+main = "build/index.js"
+compatibility_date = "2026-09-01"
+
+[build]
+command = "cargo install -q worker-build@0.8.7 && worker-build --release"
+watch_dir = "src"
+
+# The app itself (web/build.sh puts it in web/dist). Cloudflare serves these
+# files without running the Worker; only /api/* and /auth/* reach it.
+[assets]
+directory = "../web/dist"
+binding = "ASSETS"
+not_found_handling = "single-page-application"
+run_worker_first = ["/api/*", "/auth/*"]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "northstar"
+# `wrangler d1 create northstar` prints this id: paste it here.
+database_id = "00000000-0000-0000-0000-000000000000"
+migrations_dir = "migrations"
+
+[vars]
+# What the app calls the team.
+TEAM_NAME = "MarkedExiled Software"
+# Your Discord user id (and any other owners'), comma separated. Owners
+# listed here can always sign in and manage the team.
+OWNER_DISCORD_IDS = ""
+# From the Discord developer portal: your application's OAuth2 client id.
+# The client secret is not kept here: `wrangler secret put DISCORD_CLIENT_SECRET`.
+DISCORD_CLIENT_ID = ""

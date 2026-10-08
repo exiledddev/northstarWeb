@@ -1,0 +1,7 @@
+[build]
+target = "wasm32-unknown-unknown"
+
+[net]
+# fetch git dependencies with the git command line, so they use your own git
+# credentials and proxy settings
+git-fetch-with-cli = true
