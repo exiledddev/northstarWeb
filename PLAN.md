@@ -10,15 +10,18 @@ features made only in the browser for now:
   ACT ONE at its close; `# ACT ONE` in the file.
 - **Chosen character colours:** Random or Custom; a chosen colour is a hue
   kept in the script's front matter, for the whole team.
+- **Your own shortcuts:** Settings → Keyboard, kept in each person's own
+  settings on the server, with a reset to the defaults.
 
-The desktop app shows both in a script that has them, but does not make them.
+The desktop app shows acts and chosen colours in a script that has them, but
+does not make them, and keeps its own shortcuts.
 
 - **Desktop app:** restructured as a library behind a `Store` trait, with its
   file format byte-for-byte unchanged (golden test) and a pre-install backup in
-  `install.sh`. 97 tests.
+  `install.sh`. 100 tests.
 - **Server:** `server/`. 11 logic tests and 11 end-to-end API tests. Discord
   settings are Worker secrets, and the first deploy creates the database.
-- **Browser app:** `web/`. 5 Playwright tests in Chromium.
+- **Browser app:** `web/`. 6 Playwright tests in Chromium.
 
 Not built yet: phase 3 (real-time co-writing) and phase 4 (comments, revision
 mode, desktop "Connect to team"). Setup and deploy steps are in

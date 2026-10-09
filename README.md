@@ -39,6 +39,10 @@ browser, on one shared library.
   to choose theirs; they keep it everywhere, in every theme and in the PDF.
   Chosen colours are kept in the script, so the whole team sees the same
   ones. *Use random* gives a colour back to chance.
+- **Your own shortcuts.** Settings → Keyboard lists every shortcut. Click one
+  and press the keys you want instead. Each person's shortcuts are their own:
+  they are kept with that person's account, so they follow them to any
+  browser they sign in on. *Reset all to default* puts back the usual ones.
 - **Free to run.** One Cloudflare Worker and a D1 database, both on
   Cloudflare's free plan (numbers in [PLAN.md](PLAN.md)).
 
@@ -214,7 +218,11 @@ cd web && npm install && npm test  # the real app in Chromium (Playwright), agai
   are not supported yet.
 - **Keyboard shortcuts.** Browsers keep Ctrl+N and Ctrl+1–7 for themselves.
   Use Ctrl+Alt+N for a new script and Alt+1–7 for elements. Ctrl+Shift+Enter
-  starts an act.
+  starts an act. Any of them can be changed in Settings → Keyboard, except to
+  a chord the browser keeps.
+- **The file picker in headless Chromium.** The automated import test clicks
+  Import again if headless Chromium shows no file picker for the first click.
+  The app opens it within the click every time.
 - **One editor per script, for now.** Real-time co-writing is the next phase
   (see [PLAN.md](PLAN.md)).
 
