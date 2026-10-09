@@ -207,3 +207,30 @@ test("a Fountain file picked in the browser becomes a team script", async () => 
   assert.deepEqual(sam.errors, []);
   await sam.context.close();
 });
+
+test("Ctrl+Shift+Enter starts an act, and it reaches the team library", async () => {
+  const sam = await someone(OWNER, "Sam Ito");
+  const id = await newScript(sam.api, `Acts ${randomBytes(3).toString("hex")}`, "Phones ring.");
+  await openApp(sam.page);
+  const opened = sam.page.waitForResponse((r) => r.url().endsWith(`/api/scripts/${id}/open`));
+  await sam.page.mouse.click(650, 230);
+  assert.equal((await opened).status(), 200);
+  await sam.page.waitForTimeout(1500);
+
+  // the caret is in the first scene: the act goes in before its heading
+  const saved = sam.page.waitForResponse((r) => r.url().endsWith(`/api/scripts/${id}`) && r.request().method() === "PUT", { timeout: 20_000 });
+  await sam.page.keyboard.press("Control+Shift+Enter");
+  assert.equal((await saved).status(), 200);
+  const back = await call(sam.api, "GET", `/api/scripts/${id}`);
+  assert.match(back.json.body, /\n# ACT ONE\n\n## INT\. ROOM - DAY\n/);
+  await sam.page.waitForTimeout(600);
+  await sam.page.screenshot({ path: join(SHOTS, "7-act.png") });
+
+  // and the PDF still comes out
+  const download = sam.page.waitForEvent("download");
+  await sam.page.keyboard.press("Control+E");
+  const bytes = readFileSync(await (await download).path());
+  assert.equal(bytes.subarray(0, 5).toString(), "%PDF-");
+  assert.deepEqual(sam.errors, []);
+  await sam.context.close();
+});

@@ -24,11 +24,7 @@ impl Cx {
         self.env.var(name).map(|v| v.to_string()).unwrap_or_default()
     }
     pub fn secret(&self, name: &str) -> String {
-        self.env
-            .secret(name)
-            .map(|v| v.to_string())
-            .or_else(|_| self.env.var(name).map(|v| v.to_string()))
-            .unwrap_or_default()
+        setting(&self.env, name)
     }
     pub fn team_name(&self) -> String {
         let t = self.var("TEAM_NAME");
@@ -43,6 +39,15 @@ impl Cx {
     pub fn dev_login(&self) -> bool {
         self.var("DEV_LOGIN") == "1" && logic::is_local(&self.host)
     }
+}
+
+/// A setting kept as a secret (`wrangler secret put`), or as a plain var
+/// (`.dev.vars` locally); empty when it is neither.
+pub fn setting(env: &Env, name: &str) -> String {
+    env.secret(name)
+        .map(|v| v.to_string())
+        .or_else(|_| env.var(name).map(|v| v.to_string()))
+        .unwrap_or_default()
 }
 
 /// Someone signed in.
@@ -74,7 +79,7 @@ pub async fn handle(mut req: Request, env: Env) -> Result<Response> {
         now: worker::Date::now().as_millis() as i64,
         origin,
         host,
-        owners: logic::owners(&env.var("OWNER_DISCORD_IDS").map(|v| v.to_string()).unwrap_or_default()),
+        owners: logic::owners(&setting(&env, "OWNER_DISCORD_IDS")),
         env,
     };
 

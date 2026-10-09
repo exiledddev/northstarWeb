@@ -2,6 +2,7 @@
 # Lets /auth/dev?id=<discord id>&name=<name> sign in on localhost without
 # Discord. The team list still decides who gets in.
 DEV_LOGIN=1
+# Deployed, this and the two below are `wrangler secret put` values.
 OWNER_DISCORD_IDS=111111111111111111
 # To try the real Discord sign-in locally as well:
 # DISCORD_CLIENT_ID=...
