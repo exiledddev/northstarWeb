@@ -13,7 +13,7 @@ crate-type = ["cdylib", "rlib"]
 [dependencies]
 # The whole app, design system and all, straight from the desktop repo —
 # pinned, so a desktop change reaches the web only when this line moves.
-northstar = { git = "https://github.com/exiledddev/northstar", rev = "06b012b1aca4f9b24e8fe153b67a498024f22a8f" }
+northstar = { git = "https://github.com/exiledddev/northstar", rev = "82748111e6e715f81007c7a65bd3246bcf447c2c" }
 wasm-bindgen = "0.2"
 wasm-bindgen-futures = "0.4"
 js-sys = "0.3"

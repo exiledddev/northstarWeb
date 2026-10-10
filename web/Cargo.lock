@@ -1552,7 +1552,7 @@ checksum = "2bf50223579dc7cdcfb3bfcacf7069ff68243f8c363f62ffa99cf000a6b9c451"
 [[package]]
 name = "northstar"
 version = "2.0.0"
-source = "git+https://github.com/exiledddev/northstar?rev=06b012b1aca4f9b24e8fe153b67a498024f22a8f#06b012b1aca4f9b24e8fe153b67a498024f22a8f"
+source = "git+https://github.com/exiledddev/northstar?rev=82748111e6e715f81007c7a65bd3246bcf447c2c#82748111e6e715f81007c7a65bd3246bcf447c2c"
 dependencies = [
  "chrono",
  "dirs",
@@ -2074,7 +2074,7 @@ checksum = "e8cf8e6a8aa66ce33f63993ffc4ea4271eb5b0530a9002db8455ea6050c77bfa"
 [[package]]
 name = "printpdf"
 version = "0.7.0"
-source = "git+https://github.com/exiledddev/northstar?rev=06b012b1aca4f9b24e8fe153b67a498024f22a8f#06b012b1aca4f9b24e8fe153b67a498024f22a8f"
+source = "git+https://github.com/exiledddev/northstar?rev=82748111e6e715f81007c7a65bd3246bcf447c2c#82748111e6e715f81007c7a65bd3246bcf447c2c"
 dependencies = [
  "lopdf",
  "owned_ttf_parser 0.19.0",
