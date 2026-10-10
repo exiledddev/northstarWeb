@@ -174,6 +174,63 @@ The browser reads copies: your local files stay exactly as they were. Fountain
 - Deploying never touches the secrets from step 4, or the scripts in the
   database.
 
+### Updating from the first version
+
+The first version kept your database id and Discord IDs in
+`server/wrangler.toml`. Now the database id is the only one of them kept
+there, and the Discord IDs are secrets. If you deployed that first version,
+update like this, in this order. Your team's scripts stay where they are.
+
+1. **Note your settings.** Open `server/wrangler.toml` and copy your
+   `database_id`, `OWNER_DISCORD_IDS`, `DISCORD_CLIENT_ID`, and `TEAM_NAME`
+   if you changed it. (`npx wrangler d1 list` shows the database id again if
+   you ever lose it.)
+2. **Get the new code.** Your edits to `wrangler.toml` would block the pull,
+   so set them aside first:
+
+   ```sh
+   git stash
+   git checkout main
+   git pull
+   ```
+
+   You won't need the stash back: the values are in your notes from step 1,
+   and `git stash drop` clears it once the update works.
+
+   If you had committed those edits instead, pull with
+   `git pull --no-rebase`. It stops on a conflict in `server/wrangler.toml`:
+   take the new file with `git checkout --theirs server/wrangler.toml`, do
+   step 3, then `git add server/wrangler.toml` and `git commit`.
+3. **Put your database back.** In `server/wrangler.toml`, under
+   `[[d1_databases]]`, add `database_id = "<your id>"` (and your
+   `TEAM_NAME`, if you had changed it). Commit it, so the next pull doesn't
+   clash; the id is not a secret. **Do not skip this:** without the id, the
+   next deploy creates a new, empty database, and the team's scripts would
+   seem to be gone.
+4. **Build and deploy:**
+
+   ```sh
+   web/build.sh
+   cd server
+   npm install
+   npm run deploy
+   ```
+
+   This deploy removes the two old plain variables from the Worker. There are
+   no new tables, so no migration is needed.
+5. **Add the two secrets straight away:**
+
+   ```sh
+   npx wrangler secret put OWNER_DISCORD_IDS
+   npx wrangler secret put DISCORD_CLIENT_ID
+   ```
+
+   `DISCORD_CLIENT_SECRET` is a secret already; leave it. Until this step is
+   done, owners who are only in `OWNER_DISCORD_IDS` may be signed out. They
+   can sign in again once it is done.
+6. **Load the new app.** Reload the site with Ctrl+Shift+R. **New act** is in
+   the Write toolbar, and Settings has a **Keyboard** tab.
+
 ## Working on it locally
 
 ```sh
