@@ -84,6 +84,23 @@ async function openApp(page) {
   await page.waitForTimeout(1200);
 }
 
+/** Click what opens the file picker, and pick `path`. The app clicks its
+ * file input inside the click every time (with the click's user activation),
+ * but headless Chromium does not always raise the dialog for it, so a click
+ * that raises none is tried again. */
+async function pickFiles(page, [x, y], path) {
+  for (let attempt = 0; attempt < 3; attempt++) {
+    const chooser = page.waitForEvent("filechooser", { timeout: 4_000 }).catch(() => null);
+    await page.mouse.click(x, y);
+    const picked = await chooser;
+    if (picked) {
+      await picked.setFiles(path);
+      return;
+    }
+  }
+  throw new Error("the file picker never opened");
+}
+
 async function newScript(api, title, line) {
   const id = randomBytes(8).toString("hex");
   const body = `---\ntitle: ${title}\nauthor: Sam Ito\ncontact: \ndraft: First Draft\n---\n\n## INT. ROOM - DAY\n\n${line}\n\n`;
@@ -191,10 +208,8 @@ test("a Fountain file picked in the browser becomes a team script", async () => 
   const title = `Imported ${randomBytes(3).toString("hex")}`;
   const path = join(tmpdir(), `${title.replace(" ", "-")}.fountain`);
   writeFileSync(path, `Title: ${title}\nAuthor: June Park\n\nEXT. HARBOUR - NIGHT\n\nFog rolls in.\n\nJUNE\nWe're late.\n`);
-  const chooser = sam.page.waitForEvent("filechooser", { timeout: 10_000 });
-  await sam.page.mouse.click(992, 89); // Home's Import button
   const created = sam.page.waitForResponse((r) => r.url().endsWith("/api/scripts") && r.request().method() === "POST");
-  await (await chooser).setFiles(path);
+  await pickFiles(sam.page, [992, 89], path); // Home's Import button
   assert.equal((await created).status(), 201);
   const list = await call(sam.api, "GET", "/api/scripts");
   const row = list.json.scripts.find((s) => s.title === title);
@@ -204,6 +219,59 @@ test("a Fountain file picked in the browser becomes a team script", async () => 
   // and it opens, ready to write
   await sam.page.waitForTimeout(1500);
   await sam.page.screenshot({ path: join(SHOTS, "6-imported.png") });
+  assert.deepEqual(sam.errors, []);
+  await sam.context.close();
+});
+
+test("Ctrl+Shift+Enter starts an act, and it reaches the team library", async () => {
+  const sam = await someone(OWNER, "Sam Ito");
+  const id = await newScript(sam.api, `Acts ${randomBytes(3).toString("hex")}`, "Phones ring.");
+  await openApp(sam.page);
+  const opened = sam.page.waitForResponse((r) => r.url().endsWith(`/api/scripts/${id}/open`));
+  await sam.page.mouse.click(650, 230);
+  assert.equal((await opened).status(), 200);
+  await sam.page.waitForTimeout(1500);
+
+  // the caret is in the first scene: the act goes in before its heading
+  const saved = sam.page.waitForResponse((r) => r.url().endsWith(`/api/scripts/${id}`) && r.request().method() === "PUT", { timeout: 20_000 });
+  await sam.page.keyboard.press("Control+Shift+Enter");
+  assert.equal((await saved).status(), 200);
+  const back = await call(sam.api, "GET", `/api/scripts/${id}`);
+  assert.match(back.json.body, /\n# ACT ONE\n\n## INT\. ROOM - DAY\n/);
+  await sam.page.waitForTimeout(600);
+  await sam.page.screenshot({ path: join(SHOTS, "7-act.png") });
+
+  // and the PDF still comes out
+  const download = sam.page.waitForEvent("download");
+  await sam.page.keyboard.press("Control+E");
+  const bytes = readFileSync(await (await download).path());
+  assert.equal(bytes.subarray(0, 5).toString(), "%PDF-");
+  assert.deepEqual(sam.errors, []);
+  await sam.context.close();
+});
+
+test("a shortcut of your own works in the browser, and only for you", async () => {
+  // Sam's Quick Export is Ctrl+Alt+P; Ctrl+E no longer exports for Sam
+  const sam = await someone(OWNER, "Sam Ito", "theme = bloodmoon\nlight_mode = no\nsplash = no\nkey.quick_export = Ctrl+Alt+P\n");
+  const id = await newScript(sam.api, `Keys ${randomBytes(3).toString("hex")}`, "Phones ring.");
+  await openApp(sam.page);
+  const opened = sam.page.waitForResponse((r) => r.url().endsWith(`/api/scripts/${id}/open`));
+  await sam.page.mouse.click(650, 230);
+  assert.equal((await opened).status(), 200);
+  await sam.page.waitForTimeout(1500);
+
+  let downloads = 0;
+  sam.page.on("download", () => downloads++);
+  await sam.page.keyboard.press("Control+E");
+  await sam.page.waitForTimeout(1500);
+  assert.equal(downloads, 0, "the old chord is free");
+  const download = sam.page.waitForEvent("download");
+  await sam.page.keyboard.press("Control+Alt+P");
+  assert.match((await download).suggestedFilename(), /\.pdf$/);
+
+  // kept in Sam's own settings on the server, not anyone else's
+  const mine = await call(sam.api, "GET", "/api/settings");
+  assert.match(JSON.stringify(mine.json), /key\.quick_export = Ctrl\+Alt\+P/);
   assert.deepEqual(sam.errors, []);
   await sam.context.close();
 });

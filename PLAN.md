@@ -3,13 +3,25 @@
 ## Status (October 2026)
 
 Built and tested: everything in this plan up to and including phase 2, plus
-Discord accounts, the Home script picker and History:
+Discord accounts, the Home script picker and History. Since then, two writing
+features made only in the browser for now:
+
+- **Acts:** a new page and a centred, underlined title per act, and END OF
+  ACT ONE at its close; `# ACT ONE` in the file.
+- **Chosen character colours:** Random or Custom; a chosen colour is a hue
+  kept in the script's front matter, for the whole team.
+- **Your own shortcuts:** Settings → Keyboard, kept in each person's own
+  settings on the server, with a reset to the defaults.
+
+The desktop app shows acts and chosen colours in a script that has them, but
+does not make them, and keeps its own shortcuts.
 
 - **Desktop app:** restructured as a library behind a `Store` trait, with its
   file format byte-for-byte unchanged (golden test) and a pre-install backup in
-  `install.sh`. 80 tests.
-- **Server:** `server/`. 11 logic tests and 11 end-to-end API tests.
-- **Browser app:** `web/`. 4 Playwright tests in Chromium.
+  `install.sh`. 100 tests.
+- **Server:** `server/`. 11 logic tests and 11 end-to-end API tests. Discord
+  settings are Worker secrets, and the first deploy creates the database.
+- **Browser app:** `web/`. 6 Playwright tests in Chromium.
 
 Not built yet: phase 3 (real-time co-writing) and phase 4 (comments, revision
 mode, desktop "Connect to team"). Setup and deploy steps are in
@@ -248,12 +260,11 @@ Implements `Store` using `ehttp` (browser fetch) with callbacks that push events
 
 ## 6. Deploy (all free; written up in the `README.md`)
 
-1. Create a Discord application. Add the redirects `https://<name>.<you>.workers.dev/auth/discord/callback` and `http://localhost:8787/auth/discord/callback`.
-2. Put your Discord user ID in `OWNER_DISCORD_IDS`.
-3. Create the database: `wrangler d1 create northstar`, then `wrangler d1 migrations apply northstar --remote`.
-4. Store the secret: `wrangler secret put DISCORD_CLIENT_SECRET`.
-5. Build and deploy: `web/build.sh`, then `cd server && wrangler deploy`.
-6. Add teammates in Settings → Team.
+1. Build and deploy: `web/build.sh`, then `cd server && npm run deploy`. The first deploy creates the D1 database (wrangler 4.45+ provisions a binding that has no `database_id`, and writes the id back into `wrangler.toml`).
+2. Create the tables: `npm run migrate:remote`.
+3. Create a Discord application. Add the redirects `https://<name>.<you>.workers.dev/auth/discord/callback` and `http://localhost:8787/auth/discord/callback`.
+4. Store three secrets with `wrangler secret put`: `OWNER_DISCORD_IDS`, `DISCORD_CLIENT_ID`, `DISCORD_CLIENT_SECRET`. Being secrets, they stay out of the repository and no deploy can reset them.
+5. Add teammates in Settings → Team.
 
 ## 7. Order of work (each step committed and pushed)
 

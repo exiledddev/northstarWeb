@@ -56,7 +56,7 @@ pub async fn current(req: &Request, cx: &Cx) -> Result<Option<Me>> {
 
 /// Off to Discord to ask who this is.
 pub async fn discord(cx: &Cx) -> Result<Response> {
-    let client = cx.var("DISCORD_CLIENT_ID");
+    let client = cx.secret("DISCORD_CLIENT_ID");
     if client.trim().is_empty() {
         return web::fail(500, "Discord sign-in is not set up yet: DISCORD_CLIENT_ID is missing.");
     }
@@ -94,7 +94,7 @@ pub async fn discord_callback(req: &Request, cx: &Cx) -> Result<Response> {
     // trade the code for a token ...
     let form = format!(
         "client_id={}&client_secret={}&grant_type=authorization_code&code={}&redirect_uri={}",
-        enc(cx.var("DISCORD_CLIENT_ID").trim()),
+        enc(cx.secret("DISCORD_CLIENT_ID").trim()),
         enc(cx.secret("DISCORD_CLIENT_SECRET").trim()),
         enc(&code),
         enc(&callback_url(cx)),

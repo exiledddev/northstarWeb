@@ -16,19 +16,19 @@ binding = "ASSETS"
 not_found_handling = "single-page-application"
 run_worker_first = ["/api/*", "/auth/*"]
 
+# The first `npm run deploy` creates this database and writes its
+# database_id in here (wrangler 4.45 or newer); commit that line afterwards.
 [[d1_databases]]
 binding = "DB"
 database_name = "northstar"
-# `wrangler d1 create northstar` prints this id: paste it here.
-database_id = "00000000-0000-0000-0000-000000000000"
 migrations_dir = "migrations"
 
 [vars]
 # What the app calls the team.
 TEAM_NAME = "MarkedExiled Software"
-# Your Discord user id (and any other owners'), comma separated. Owners
-# listed here can always sign in and manage the team.
-OWNER_DISCORD_IDS = ""
-# From the Discord developer portal: your application's OAuth2 client id.
-# The client secret is not kept here: `wrangler secret put DISCORD_CLIENT_SECRET`.
-DISCORD_CLIENT_ID = ""
+
+# Kept out of this file, as secrets, so a deploy can never blank them
+# (README, step 4):
+#   npx wrangler secret put OWNER_DISCORD_IDS       your Discord user id(s), comma separated
+#   npx wrangler secret put DISCORD_CLIENT_ID       the Discord application's client id
+#   npx wrangler secret put DISCORD_CLIENT_SECRET   its client secret
