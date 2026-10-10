@@ -28,7 +28,8 @@ browser, on one shared library.
   as a snapshot before anything else happens. Deleted scripts wait 30 days in
   Recently deleted.
 - **Acts.** *New act* in the Write ribbon (or Ctrl+Shift+Enter) starts an act
-  at the scene you are in, named ACT ONE, ACT TWO… in order; rename it to
+  where your cursor is (on the next line, or with the scene if the cursor is in
+  its heading), named ACT ONE, ACT TWO… in order; rename it to
   TEASER or COLD OPEN by typing over it. In the script an act is a wide
   divider with a constellation of its own. In print every act starts a new
   page with its title centred, bold and underlined, and ends with a centred

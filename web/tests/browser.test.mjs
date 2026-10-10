@@ -250,6 +250,37 @@ test("Ctrl+Shift+Enter starts an act, and it reaches the team library", async ()
   await sam.context.close();
 });
 
+test("a new act goes where the cursor is, not at the top of the scene", async () => {
+  const sam = await someone(OWNER, "Sam Ito");
+  const id = randomBytes(8).toString("hex");
+  const title = `Cursor ${randomBytes(3).toString("hex")}`;
+  const body = `---\ntitle: ${title}\nauthor: Sam Ito\ncontact: \ndraft: First Draft\n---\n\n# ACT ONE\n\n## INT. ROOM - DAY\n\nPhones ring.\n\nDoors slam.\n\n`;
+  const made = await call(sam.api, "POST", "/api/scripts", { id, title, author: "Sam Ito", preview: "Phones ring.", pages: 1, scenes: 1, words: 9, body });
+  assert.equal(made.status, 201);
+  await call(sam.api, "POST", `/api/scripts/${id}/release`, {});
+
+  await openApp(sam.page);
+  const opened = sam.page.waitForResponse((r) => r.url().endsWith(`/api/scripts/${id}/open`));
+  await sam.page.mouse.click(650, 230);
+  assert.equal((await opened).status(), 200);
+  await sam.page.waitForTimeout(1500);
+
+  // from the act's title down two lines, to the end of "Phones ring." (a
+  // key a frame, the way a person types)
+  for (const key of ["End", "ArrowDown", "End", "ArrowDown", "End"]) {
+    await sam.page.keyboard.press(key);
+    await sam.page.waitForTimeout(150);
+  }
+  const saved = sam.page.waitForResponse((r) => r.url().endsWith(`/api/scripts/${id}`) && r.request().method() === "PUT", { timeout: 20_000 });
+  await sam.page.keyboard.press("Control+Shift+Enter");
+  assert.equal((await saved).status(), 200);
+  const back = await call(sam.api, "GET", `/api/scripts/${id}`);
+  assert.match(back.json.body, /# ACT ONE\n\n## INT\. ROOM - DAY\n\nPhones ring\.\n\n# ACT TWO\n\nDoors slam\./);
+  await sam.page.screenshot({ path: join(SHOTS, "8-act-at-cursor.png") });
+  assert.deepEqual(sam.errors, []);
+  await sam.context.close();
+});
+
 test("a shortcut of your own works in the browser, and only for you", async () => {
   // Sam's Quick Export is Ctrl+Alt+P; Ctrl+E no longer exports for Sam
   const sam = await someone(OWNER, "Sam Ito", "theme = bloodmoon\nlight_mode = no\nsplash = no\nkey.quick_export = Ctrl+Alt+P\n");
