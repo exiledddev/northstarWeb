@@ -291,3 +291,11 @@ cd web && npm install && npm test  # the real app in Chromium (Playwright), agai
   (see [PLAN.md](PLAN.md)).
 
 NativeCompute.
+
+---
+
+## Licence
+
+MIT, the same as [Blackline](https://github.com/exiledddev/northstar); see
+[LICENSE](LICENSE). Contributions: [CONTRIBUTING.md](CONTRIBUTING.md).
+Security problems: [SECURITY.md](SECURITY.md), not the public tracker.
