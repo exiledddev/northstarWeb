@@ -1,10 +1,10 @@
 [package]
-name = "northstar-web"
+name = "blackline-web"
 version = "0.1.0"
 edition = "2021"
-description = "Northstar in a browser tab: the desktop app's own code, over the team library."
+description = "Blackline in a browser tab: the desktop app's own code, over the team library."
 license = "MIT"
-authors = ["MarkedExiled Software"]
+authors = ["NativeCompute"]
 publish = false
 
 [lib]
@@ -13,7 +13,7 @@ crate-type = ["cdylib", "rlib"]
 [dependencies]
 # The whole app, design system and all, straight from the desktop repo —
 # pinned, so a desktop change reaches the web only when this line moves.
-northstar = { git = "https://github.com/exiledddev/northstar", rev = "82748111e6e715f81007c7a65bd3246bcf447c2c" }
+blackline = { git = "https://github.com/exiledddev/northstar", rev = "440cc3aaefe471ff3c7dcab9d6043775aac3077f" }
 wasm-bindgen = "0.2"
 wasm-bindgen-futures = "0.4"
 js-sys = "0.3"

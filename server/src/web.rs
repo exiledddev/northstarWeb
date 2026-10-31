@@ -87,7 +87,7 @@ pub async fn handle(mut req: Request, env: Env) -> Result<Response> {
         let origin = req.headers().get("Origin")?;
         let site = req.headers().get("Sec-Fetch-Site")?;
         if !logic::same_origin(origin.as_deref(), site.as_deref(), &cx.origin) {
-            return fail(403, "That request did not come from Northstar.");
+            return fail(403, "That request did not come from Blackline.");
         }
     }
 
@@ -101,7 +101,7 @@ pub async fn handle(mut req: Request, env: Env) -> Result<Response> {
     }
 
     let Some(me) = auth::current(&req, &cx).await? else {
-        return fail(401, "Sign in to Northstar first.");
+        return fail(401, "Sign in to Blackline first.");
     };
     if route.writes() && !me.role.can_write() {
         return fail(403, "Viewers can read and export, but not change the library.");

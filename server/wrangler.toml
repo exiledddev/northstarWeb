@@ -1,5 +1,7 @@
-# Northstar Web — the Worker that serves the app and the team library.
+# Blackline Web — the Worker that serves the app and the team library.
 # Setup steps are in ../README.md.
+# kept from when the app was called Northstar: renaming it would make a new
+# Worker; the database name below likewise
 name = "northstar"
 main = "build/index.js"
 compatibility_date = "2026-09-01"

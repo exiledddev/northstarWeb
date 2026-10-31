@@ -4,12 +4,12 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="dark light">
-  <meta name="theme-color" content="#0A0406">
-  <title>Northstar</title>
-  <link rel="icon" href="northstar.svg" type="image/svg+xml">
+  <meta name="theme-color" content="#000000">
+  <title>Blackline</title>
+  <link rel="icon" href="blackline.svg" type="image/svg+xml">
   <link rel="stylesheet" href="style.css">
-  <link rel="modulepreload" href="northstar_web.js">
-  <link rel="preload" href="northstar_web_bg.wasm" as="fetch" type="application/wasm" crossorigin>
+  <link rel="modulepreload" href="blackline_web.js">
+  <link rel="preload" href="blackline_web_bg.wasm" as="fetch" type="application/wasm" crossorigin>
 </head>
 <body>
   <!-- the app draws itself onto this -->
@@ -19,22 +19,19 @@
   <div id="ns-loading" role="status" aria-live="polite">
     <div class="card">
       <div class="head">
-        <img class="mark" src="northstar.svg" alt="">
-        <div>
-          <div class="name">NORTHSTAR</div>
-          <div class="version">team edition</div>
-        </div>
+        <img class="mark" src="blackline.svg" alt="">
+        <span class="hud">Team edition / screenwriting in industry format</span>
       </div>
-      <div class="tagline">Screenwriting, in industry format</div>
-      <div class="line" id="ns-loading-line">Opening the team library…</div>
+      <div class="name">Blackline</div>
+      <div class="line hud" id="ns-loading-line">Opening the team library…</div>
       <div class="foot">
-        <span class="studio">MARKEDEXILED SOFTWARE</span>
-        <span class="spinner" aria-hidden="true"></span>
+        <span class="hud">By NativeCompute</span>
+        <span class="track" aria-hidden="true"></span>
       </div>
     </div>
   </div>
 
-  <noscript>Northstar runs in your browser and needs JavaScript and WebAssembly.</noscript>
+  <noscript>Blackline runs in your browser and needs JavaScript and WebAssembly.</noscript>
   <script type="module" src="boot.js"></script>
 </body>
 </html>

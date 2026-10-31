@@ -1,7 +1,7 @@
 {
-  "name": "northstar-server",
+  "name": "blackline-server",
   "private": true,
-  "description": "Tooling for the Northstar Web Worker: wrangler to run and deploy it, and the API tests.",
+  "description": "Tooling for the Blackline Web Worker: wrangler to run and deploy it, and the API tests.",
   "scripts": {
     "dev": "wrangler dev --port 8787",
     "migrate:local": "wrangler d1 migrations apply northstar --local",

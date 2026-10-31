@@ -1,6 +1,6 @@
-// Starts Northstar. Kept out of index.html so the page's Content Security
+// Starts Blackline. Kept out of index.html so the page's Content Security
 // Policy can forbid inline scripts.
-import init from "./northstar_web.js";
+import init from "./blackline_web.js";
 
 // The app's shortcuts that a browser would otherwise act on itself (find,
 // bookmarks, save page...). The app still gets every one of these keys: this
@@ -22,5 +22,5 @@ window.addEventListener(
 
 init().catch((err) => {
   const line = document.getElementById("ns-loading-line");
-  if (line) line.textContent = "Northstar could not start in this browser: " + err;
+  if (line) line.textContent = "Blackline could not start in this browser: " + err;
 });

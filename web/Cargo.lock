@@ -155,6 +155,36 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3ded4057c258ba199e2d26386d3af3780957ecaee6c4ef4041c6b4b8b97c0b06"
 
 [[package]]
+name = "blackline"
+version = "2.0.0"
+source = "git+https://github.com/exiledddev/northstar?rev=440cc3aaefe471ff3c7dcab9d6043775aac3077f#440cc3aaefe471ff3c7dcab9d6043775aac3077f"
+dependencies = [
+ "chrono",
+ "dirs",
+ "eframe",
+ "printpdf",
+ "web-time",
+]
+
+[[package]]
+name = "blackline-web"
+version = "0.1.0"
+dependencies = [
+ "base64",
+ "blackline",
+ "chrono",
+ "image",
+ "js-sys",
+ "miniz_oxide 0.8.9",
+ "serde",
+ "serde_json",
+ "wasm-bindgen",
+ "wasm-bindgen-futures",
+ "web-sys",
+ "web-time",
+]
+
+[[package]]
 name = "block"
 version = "0.1.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1550,41 +1580,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2bf50223579dc7cdcfb3bfcacf7069ff68243f8c363f62ffa99cf000a6b9c451"
 
 [[package]]
-name = "northstar"
-version = "2.0.0"
-source = "git+https://github.com/exiledddev/northstar?rev=82748111e6e715f81007c7a65bd3246bcf447c2c#82748111e6e715f81007c7a65bd3246bcf447c2c"
-dependencies = [
- "chrono",
- "dirs",
- "eframe",
- "printpdf",
- "raw-window-handle",
- "wayland-backend",
- "wayland-client",
- "wayland-protocols-plasma",
- "web-time",
- "x11rb",
-]
-
-[[package]]
-name = "northstar-web"
-version = "0.1.0"
-dependencies = [
- "base64",
- "chrono",
- "image",
- "js-sys",
- "miniz_oxide 0.8.9",
- "northstar",
- "serde",
- "serde_json",
- "wasm-bindgen",
- "wasm-bindgen-futures",
- "web-sys",
- "web-time",
-]
-
-[[package]]
 name = "num-conv"
 version = "0.2.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2074,7 +2069,7 @@ checksum = "e8cf8e6a8aa66ce33f63993ffc4ea4271eb5b0530a9002db8455ea6050c77bfa"
 [[package]]
 name = "printpdf"
 version = "0.7.0"
-source = "git+https://github.com/exiledddev/northstar?rev=82748111e6e715f81007c7a65bd3246bcf447c2c#82748111e6e715f81007c7a65bd3246bcf447c2c"
+source = "git+https://github.com/exiledddev/northstar?rev=440cc3aaefe471ff3c7dcab9d6043775aac3077f#440cc3aaefe471ff3c7dcab9d6043775aac3077f"
 dependencies = [
  "lopdf",
  "owned_ttf_parser 0.19.0",
