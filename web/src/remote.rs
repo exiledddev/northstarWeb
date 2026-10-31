@@ -18,13 +18,13 @@ use std::rc::Rc;
 use std::sync::Arc;
 
 use base64::Engine;
-use northstar::alerts::Tone;
-use northstar::backend::{Access, EditSession, Event, Load, Member, Person, Role, Store, Team};
-use northstar::eframe::egui;
-use northstar::export;
-use northstar::model::Document;
-use northstar::settings::{AfterExport, Settings};
-use northstar::storage::{self, Entry, Snapshot};
+use blackline::alerts::Tone;
+use blackline::backend::{Access, EditSession, Event, Load, Member, Person, Role, Store, Team};
+use blackline::eframe::egui;
+use blackline::export;
+use blackline::model::Document;
+use blackline::settings::{AfterExport, Settings};
+use blackline::storage::{self, Entry, Snapshot};
 use serde::Deserialize;
 use serde_json::json;
 use web_time::{Duration, SystemTime, UNIX_EPOCH};
@@ -1204,6 +1204,8 @@ fn key_id(key: &Path) -> String {
     key.to_string_lossy().into_owned()
 }
 
+/// Named from when the app was Northstar: kept, so drafts already in a
+/// browser are still found.
 fn draft_key(id: &str) -> String {
     format!("northstar-draft:{id}")
 }

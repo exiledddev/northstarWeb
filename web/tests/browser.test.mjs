@@ -1,4 +1,4 @@
-// Northstar Web in a real browser (Chromium, through Playwright), against
+// Blackline Web in a real browser (Chromium, through Playwright), against
 // `wrangler dev` serving web/dist:
 //
 //   (cd ../server && npm run dev)      with DEV_LOGIN=1 in server/.dev.vars
@@ -16,7 +16,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { chromium } from "playwright";
 
-const BASE = process.env.NORTHSTAR_URL ?? "http://127.0.0.1:8787";
+const BASE = process.env.BLACKLINE_URL ?? process.env.NORTHSTAR_URL ?? "http://127.0.0.1:8787";
 const OWNER = "111111111111111111";
 const SHOTS = new URL("./shots/", import.meta.url).pathname;
 mkdirSync(SHOTS, { recursive: true });
@@ -26,6 +26,8 @@ const VIEW = { width: 1320, height: 880 };
 let browser;
 before(async () => {
   browser = await chromium.launch({
+    // a Chromium of a different build than this Playwright's, when one is given
+    executablePath: process.env.CHROMIUM_PATH || undefined,
     args: ["--use-angle=swiftshader", "--enable-unsafe-swiftshader", "--ignore-gpu-blocklist"],
   });
 });
@@ -41,7 +43,7 @@ async function someone(id, name, settings = "theme = bloodmoon\nlight_mode = no\
   page.on("pageerror", (e) => errors.push(e.message));
   page.on("console", (m) => m.type() === "error" && !/401/.test(m.text()) && errors.push(m.text()));
   const api = await context.newPage();
-  await api.goto(`${BASE}/northstar.svg`);
+  await api.goto(`${BASE}/blackline.svg`);
   await api.evaluate(
     async ([id, name]) => {
       await fetch(`/auth/dev?id=${id}&name=${encodeURIComponent(name)}`, { redirect: "manual" });
@@ -269,7 +271,7 @@ test("a new act goes where the cursor is, not at the top of the scene", async ()
   // key a frame, the way a person types)
   for (const key of ["End", "ArrowDown", "End", "ArrowDown", "End"]) {
     await sam.page.keyboard.press(key);
-    await sam.page.waitForTimeout(150);
+    await sam.page.waitForTimeout(400);
   }
   const saved = sam.page.waitForResponse((r) => r.url().endsWith(`/api/scripts/${id}`) && r.request().method() === "PUT", { timeout: 20_000 });
   await sam.page.keyboard.press("Control+Shift+Enter");

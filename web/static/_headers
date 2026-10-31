@@ -5,5 +5,5 @@
   Permissions-Policy: camera=(), microphone=(), geolocation=()
   X-Frame-Options: DENY
 
-/northstar_web_bg.wasm
+/blackline_web_bg.wasm
   Cache-Control: public, max-age=300, must-revalidate

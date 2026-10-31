@@ -1,12 +1,15 @@
-# Northstar Web
+# Blackline Web
 
-The team edition of [Northstar](https://github.com/exiledddev/northstar), the
-screenwriting studio by MarkedExiled Software. Your whole team uses it in a
+*Formerly Northstar Web.* The Worker and its database keep their `northstar`
+names inside Cloudflare, so an existing deployment carries on as it is.
+
+The team edition of [Blackline](https://github.com/exiledddev/northstar), the
+screenwriting studio by NativeCompute. Your whole team uses it in a
 browser, on one shared library.
 
 ![Home: the script picker](docs/home.png)
 
-- **The same app.** The browser runs Northstar's own Rust code, compiled to
+- **The same app.** The browser runs Blackline's own Rust code, compiled to
   WebAssembly. The editor, Cards, Reading mode, every theme and the PDF export
   are exactly the desktop app's.
 - **Discord accounts.** Everyone signs in with Discord. Only people on the
@@ -47,7 +50,7 @@ browser, on one shared library.
 - **Free to run.** One Cloudflare Worker and a D1 database, both on
   Cloudflare's free plan (numbers in [PLAN.md](PLAN.md)).
 
-Your own Northstar library on your computer (`~/.local/share/northstar`) is
+Your own Blackline library on your computer (`~/.local/share/northstar`) is
 never touched by any of this. The web app cannot see it. Moving scripts to the
 team uploads copies (see below).
 
@@ -60,7 +63,7 @@ team uploads copies (see below).
 ## How it fits together
 
 ```
-browser ── Northstar (wasm) ──► Cloudflare Worker (Rust) ──► D1 (SQLite)
+browser ── Blackline (wasm) ──► Cloudflare Worker (Rust) ──► D1 (SQLite)
                                  ├─ the app's files (served free, no Worker run)
                                  ├─ /auth/*  Discord sign-in, sessions
                                  └─ /api/*   scripts, leases, history, team
@@ -121,7 +124,7 @@ prints to the `[[d1_databases]]` section of `server/wrangler.toml`, and run
 ### 3. A Discord application, for signing in
 
 1. Go to <https://discord.com/developers/applications> and choose **New
-   Application**. Call it "Northstar".
+   Application**. Call it "Blackline".
 2. Open **OAuth2**. Copy the **Client ID**. Choose **Reset Secret** and copy
    the **Client Secret**; keep it private.
 3. Under **Redirects**, add:
@@ -167,7 +170,7 @@ The browser reads copies: your local files stay exactly as they were. Fountain
 
 ## Updating
 
-- **The app.** When Northstar itself changes, point `rev` in `web/Cargo.toml`
+- **The app.** When Blackline itself changes, point `rev` in `web/Cargo.toml`
   at the new commit of `exiledddev/northstar`, then `web/build.sh` and
   `npm run deploy` again.
 - **The server.** If a change adds files to `server/migrations/`, run
@@ -242,7 +245,7 @@ npm run migrate:local
 npm run dev                      # http://127.0.0.1:8787
 
 # in another terminal
-NORTHSTAR=../northstar web/build.sh    # or plain web/build.sh for the pinned commit
+BLACKLINE=../northstar web/build.sh    # or plain web/build.sh for the pinned commit
 ```
 
 Sign in without Discord at `http://127.0.0.1:8787/auth/dev?id=111111111111111111&name=Sam`.
@@ -284,4 +287,4 @@ cd web && npm install && npm test  # the real app in Chromium (Playwright), agai
 - **One editor per script, for now.** Real-time co-writing is the next phase
   (see [PLAN.md](PLAN.md)).
 
-MarkedExiled Software.
+NativeCompute.

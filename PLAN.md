@@ -1,4 +1,4 @@
-# Northstar for the web — the plan
+# Blackline for the web — the plan
 
 ## Status (October 2026)
 
@@ -29,7 +29,7 @@ mode, desktop "Connect to team"). Setup and deploy steps are in
 
 ## TL;DR
 
-- **Same app in the browser.** The Rust/egui Northstar code compiles to WebAssembly, so the web app looks and works exactly like the desktop app (and stays consistent with Tesseract) because it is the same code.
+- **Same app in the browser.** The Rust/egui Blackline code compiles to WebAssembly, so the web app looks and works exactly like the desktop app (and stays consistent with Tesseract) because it is the same code.
 - **Free backend.** One Cloudflare Worker, written in Rust, serves the app files and a small API. The free D1 database (SQLite) holds the team library: 5 GB, plenty for a small team. If we ever outgrow the free daily limits, the $5/month paid plan lifts them with no code changes.
 - **Discord accounts.** You sign in with Discord. Only accounts on the team list can get in. You and any other owners are listed in the config. Owners add everyone else by Discord ID from a **Team** tab in Settings, and set them as owner, editor or viewer. No Cloudflare Access is needed: Discord login is built into the Worker.
 - **Script picker on entry (web only).** After signing in you land on a Home screen in the app's design: a greeting, "Continue writing", your starred and team scripts as cards showing who edited them last (with Discord avatar) and who is editing right now, plus New script and Import. The desktop app is unchanged.
@@ -45,13 +45,13 @@ mode, desktop "Connect to team"). Setup and deploy steps are in
 
 ## Context
 
-Northstar is a single-user desktop app (Rust, eframe/egui 0.29, files under `~/.local/share/northstar/`). The team wants to use it from a browser. The team edition adds two things the desktop app doesn't need:
+Blackline is a single-user desktop app (Rust, eframe/egui 0.29, files under `~/.local/share/northstar/`). The team wants to use it from a browser. The team edition adds two things the desktop app doesn't need:
 - a script picker when you open the website
 - Discord accounts that show who made each edit
 
 Decisions:
 - Sign-in is limited to listed accounts.
-- Roles are set inside Northstar by owners.
+- Roles are set inside Blackline by owners.
 - The Home screen is for the web only; the desktop app is unchanged.
 
 The code is split across two public repos: `exiledddev/northstar` (desktop and shared code) and `exiledddev/northstarWeb` (the web client, server and deploy setup).
@@ -208,7 +208,7 @@ Pure logic is unit-tested natively in `server/src/logic.rs`, which has no worker
 
 ### Boot
 
-`index.html` shows a CSS card that copies `splash.rs` (the Northstar mark, NORTHSTAR, the tagline, MARKEDEXILED SOFTWARE) while the wasm downloads. Then `start()` calls `/api/me`:
+`index.html` shows a CSS card that copies `splash.rs` (the Blackline mark, NORTHSTAR, the tagline, MARKEDEXILED SOFTWARE) while the wasm downloads. Then `start()` calls `/api/me`:
 - **401:** a small egui `SignIn` app, built from `northstar::{theme, ui, logo, icons}`, shows "Continue with Discord", or the not-on-the-list message.
 - **200:** it fetches settings, the script list and the team members, fills the `RemoteStore` cache, and starts `northstar::app::App::with_store(cc, store)`. The app opens on the **Home screen**.
 

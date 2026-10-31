@@ -1,7 +1,7 @@
 {
-  "name": "northstar-web",
+  "name": "blackline-web",
   "private": true,
-  "description": "Browser tests for Northstar Web (the app itself is Rust: see build.sh).",
+  "description": "Browser tests for Blackline Web (the app itself is Rust: see build.sh).",
   "scripts": {
     "test": "node --test tests/*.test.mjs"
   },

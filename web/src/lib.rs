@@ -1,7 +1,7 @@
-//! Northstar in a browser tab.
+//! Blackline in a browser tab.
 //!
 //! This crate is small on purpose: the app — editor, Cards, Reading mode,
-//! every theme, the PDF — is the desktop app's own code (the `northstar`
+//! every theme, the PDF — is the desktop app's own code (the `blackline`
 //! crate). What lives here is only what a browser needs instead of a desktop:
 //! the team library behind the app's `Store` (remote.rs), the door you sign
 //! in through (signin.rs), and the glue to the page (browser.rs).
@@ -10,9 +10,9 @@ mod browser;
 mod remote;
 mod signin;
 
-use northstar::app::App;
-use northstar::backend::Role;
-use northstar::eframe;
+use blackline::app::App;
+use blackline::backend::Role;
+use blackline::eframe;
 use wasm_bindgen::prelude::*;
 use wasm_bindgen::JsCast;
 
@@ -100,7 +100,7 @@ async fn run(
     match started {
         Ok(()) => browser::hide_loading_card(),
         Err(e) => browser::loading_card_says(&format!(
-            "This browser could not start Northstar ({}). It needs WebGL 2.",
+            "This browser could not start Blackline ({}). It needs WebGL 2.",
             browser::js_err(e)
         )),
     }

@@ -1,10 +1,10 @@
 [package]
-name = "northstar-server"
+name = "blackline-server"
 version = "0.1.0"
 edition = "2021"
-description = "Northstar Web's server: Discord sign-in and the team library API, on a Cloudflare Worker."
+description = "Blackline Web's server: Discord sign-in and the team library API, on a Cloudflare Worker."
 license = "MIT"
-authors = ["MarkedExiled Software"]
+authors = ["NativeCompute"]
 publish = false
 
 [lib]

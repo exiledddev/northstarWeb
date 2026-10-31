@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # Build the web app into web/dist, ready for the Worker to serve.
 #
-#   ./build.sh                 the pinned Northstar from git (Cargo.toml)
-#   NORTHSTAR=../../northstar ./build.sh
+#   ./build.sh                 the pinned Blackline from git (Cargo.toml)
+#   BLACKLINE=../../northstar ./build.sh
 #                              a local checkout of the desktop repo instead
 #
 # Needs: rustup target add wasm32-unknown-unknown, and the wasm-bindgen CLI
@@ -14,10 +14,12 @@ cd "$(dirname "$0")"
 say() { printf '\033[1;31m::\033[0m %s\n' "$*"; }
 
 patch=()
-if [ -n "${NORTHSTAR:-}" ]; then
-  path="$(cd "$NORTHSTAR" && pwd)"
-  patch=(--config "patch.\"https://github.com/exiledddev/northstar\".northstar.path=\"$path\"")
-  say "Using Northstar from $path"
+# NORTHSTAR is the name it had before; it still works
+local_app="${BLACKLINE:-${NORTHSTAR:-}}"
+if [ -n "$local_app" ]; then
+  path="$(cd "$local_app" && pwd)"
+  patch=(--config "patch.\"https://github.com/exiledddev/northstar\".blackline.path=\"$path\"")
+  say "Using Blackline from $path"
 fi
 
 say "Compiling for the browser"
@@ -38,18 +40,18 @@ say "Binding"
 # serving it
 mkdir -p dist
 find dist -mindepth 1 -delete
-"$bindgen" --target web --no-typescript --out-dir dist --out-name northstar_web \
-  target/wasm32-unknown-unknown/release/northstar_web.wasm
+"$bindgen" --target web --no-typescript --out-dir dist --out-name blackline_web \
+  target/wasm32-unknown-unknown/release/blackline_web.wasm
 
 opt="${WASM_OPT:-wasm-opt}"
 if command -v "$opt" >/dev/null 2>&1; then
   say "Shrinking"
   "$opt" -Os --enable-bulk-memory --enable-nontrapping-float-to-int --enable-reference-types \
     --enable-sign-ext --enable-mutable-globals \
-    dist/northstar_web_bg.wasm -o dist/northstar_web_bg.wasm
+    dist/blackline_web_bg.wasm -o dist/blackline_web_bg.wasm
 fi
 
 cp static/* dist/
-size="$(du -h dist/northstar_web_bg.wasm | cut -f1)"
-gz="$(gzip -9 -c dist/northstar_web_bg.wasm | wc -c | awk '{printf "%.1f MB", $1/1048576}')"
+size="$(du -h dist/blackline_web_bg.wasm | cut -f1)"
+gz="$(gzip -9 -c dist/blackline_web_bg.wasm | wc -c | awk '{printf "%.1f MB", $1/1048576}')"
 say "Built web/dist — the app is $size ($gz compressed)"

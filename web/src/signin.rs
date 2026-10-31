@@ -1,10 +1,10 @@
 //! The door: signing in with Discord, drawn with the app's own design system
 //! so it is the same app from the very first frame.
 
-use northstar::eframe::egui::{self, Color32, Pos2, Rect, Vec2};
-use northstar::eframe;
-use northstar::icons::{self, Icon};
-use northstar::{anim, chrome, logo, theme, ui};
+use blackline::eframe::egui::{self, Color32, Pos2, Rect, Vec2};
+use blackline::eframe;
+use blackline::icons::{self, Icon};
+use blackline::{anim, chrome, logo, theme, ui};
 
 use crate::browser;
 
@@ -60,7 +60,7 @@ impl eframe::App for SignIn {
                 logo::paint(c.painter(), mark, 0.0);
                 c.add_space(10.0);
                 let (name, _) = c.allocate_exact_size(Vec2::new(card.width() - 60.0, 18.0), egui::Sense::hover());
-                let word = "NORTHSTAR";
+                let word = "BLACKLINE";
                 let galley = c.painter().layout_no_wrap(word.to_string(), theme::font_semi(15.0), p.text);
                 let w = galley.rect.width() + 3.2 * (word.len() as f32 - 1.0);
                 theme::tracked_text(c.painter(), Pos2::new(name.center().x - w * 0.5, name.center().y), word, theme::font_semi(15.0), p.text, 3.2);
@@ -121,7 +121,7 @@ impl eframe::App for SignIn {
 
                 // the studio, at the foot of the window
                 let foot = Pos2::new(screen.center().x, screen.bottom() - 26.0);
-                let text = "MARKEDEXILED SOFTWARE";
+                let text = "NATIVECOMPUTE";
                 let galley = ui.painter().layout_no_wrap(text.to_string(), theme::font_semi(theme::T_MICRO - 0.5), p.text_faint);
                 let w = galley.rect.width() + 1.4 * (text.len() as f32 - 1.0);
                 theme::tracked_text(
