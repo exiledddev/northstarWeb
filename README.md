@@ -10,8 +10,9 @@ browser, on one shared library.
 ![Home: the script picker](docs/home.png)
 
 - **The same app.** The browser runs Blackline's own Rust code, compiled to
-  WebAssembly. The editor, Cards, Reading mode, every theme and the PDF export
-  are exactly the desktop app's.
+  WebAssembly. The editor, Cards, Reading mode, the dark and light looks and
+  the PDF export are exactly the desktop app's, drawn in NativeCompute's
+  design language.
 - **Discord accounts.** Everyone signs in with Discord. Only people on the
   team's list get in. Owners add teammates by Discord ID and set them as owner,
   editor or viewer.
@@ -40,7 +41,7 @@ browser, on one shared library.
 - **Character colours you choose.** In Settings → Colour, character colours
   are *Random* (dealt from the wheel, as before; Shuffle deals again) or
   *Custom*. Click a character's colour, in the Cast panel or the Colour tab,
-  to choose theirs; they keep it everywhere, in every theme and in the PDF.
+  to choose theirs; they keep it everywhere, dark or light, and in the PDF.
   Chosen colours are kept in the script, so the whole team sees the same
   ones. *Use random* gives a colour back to chance.
 - **Your own shortcuts.** Settings → Keyboard lists every shortcut. Click one
