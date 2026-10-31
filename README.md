@@ -94,10 +94,12 @@ sudo apt install nodejs npm        # or from nodejs.org if your release has an o
 # the wasm-bindgen CLI at the exact version web/Cargo.lock names
 # (web/build.sh tells you the version if it is wrong)
 cargo install wasm-bindgen-cli --version 0.2.129
-
-# optional: makes the download smaller
-sudo apt install binaryen
 ```
+
+`web/build.sh` builds the app unshrunk. `SHRINK=1 web/build.sh` also runs
+`wasm-opt` (binaryen) for a smaller download; some distributions' binaryen
+makes a build that will not start in Firefox, so test it there before you
+deploy it. (`WASM_OPT=/does/not/exist` is no longer needed.)
 
 ### 2. Build and deploy
 

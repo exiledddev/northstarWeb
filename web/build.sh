@@ -6,8 +6,9 @@
 #                              a local checkout of the desktop repo instead
 #
 # Needs: rustup target add wasm32-unknown-unknown, and the wasm-bindgen CLI
-# at exactly the version Cargo.lock names (the script says which). wasm-opt
-# (from binaryen) is used when found, to make the download smaller.
+# at exactly the version Cargo.lock names (the script says which).
+# SHRINK=1 also runs wasm-opt (binaryen) for a smaller download; test the
+# result in Firefox before deploying it.
 set -euo pipefail
 cd "$(dirname "$0")"
 
@@ -43,9 +44,13 @@ find dist -mindepth 1 -delete
 "$bindgen" --target web --no-typescript --out-dir dist --out-name blackline_web \
   target/wasm32-unknown-unknown/release/blackline_web.wasm
 
+# Shrinking with wasm-opt is off unless asked for (SHRINK=1): a shrink by the
+# binaryen some systems ship has stopped the app starting in Firefox
+# ("failed to grow table"), and the unshrunk app is the same app, only a
+# larger download.
 opt="${WASM_OPT:-wasm-opt}"
-if command -v "$opt" >/dev/null 2>&1; then
-  say "Shrinking"
+if [ "${SHRINK:-0}" = "1" ] && command -v "$opt" >/dev/null 2>&1; then
+  say "Shrinking with $("$opt" --version 2>/dev/null | head -1)"
   "$opt" -Os --enable-bulk-memory --enable-nontrapping-float-to-int --enable-reference-types \
     --enable-sign-ext --enable-mutable-globals \
     dist/blackline_web_bg.wasm -o dist/blackline_web_bg.wasm
